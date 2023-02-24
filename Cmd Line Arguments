@@ -1,0 +1,36 @@
+#include <linux/module.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/moduleparam.h>
+#include <linux/stat.h>
+
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Neilya,Yelzhan,Sagyndyk");
+MODULE_DESCRIPTION("Simple module");
+
+static char *name;
+static int myInt = 0;
+static int myArr[2] = { 1, -1 };
+static int myArrCnt = 2;
+
+module_param(name, charp, 0644);
+MODULE_PARM_DESC(name,  "Name of the person to be greeted!");
+module_param(myInt, int, 0644);
+MODULE_PARM_DESC(myInt, "An integer to print");
+module_param_array (myArr, int, &myArrCnt, 0644);
+MODULE_PARM_DESC(myArr, "An aray of Integers");
+
+static int __init hello_start(void)
+{
+     printk(KERN_INFO "Loading module... \n");
+     printk(KERN_INFO "Value of Integer is: %d \n", myInt);
+     return 0;
+}
+
+static void __exit hello_end(void)
+{
+     printk(KERN_INFO  "Goodbye student\n");
+}
+
+module_init(hello_start);
+module_exit(hello_end);
